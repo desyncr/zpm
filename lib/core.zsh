@@ -28,27 +28,10 @@
             # If we have a `*.plugin.zsh`, source it.
             source "$location/$script_loc"
 
-        elif [[ -f $location/init.zsh ]]; then
-            # If we have a `init.zsh`
-            if (( $+functions[pmodload] )); then
-                # If pmodload is defined pmodload the module. Remove `modules/`
-                # from loc to find module name.
-                pmodload "${loc#modules/}"
-            else
-                # Otherwise source it.
-                source "$location/init.zsh"
-            fi
-
-        elif ls "$location" | grep -l '\.zsh$' &> /dev/null; then
+        elif ls "$location" | grep -l '\..*sh$' &> /dev/null; then
             # If there is no `*.plugin.zsh` file, source *all* the `*.zsh`
             # files.
-            for script ($location/*.zsh(N)) { source "$script" }
-
-        elif ls "$location" | grep -l '\.sh$' &> /dev/null; then
-            # If there are no `*.zsh` files either, we look for and source any
-            # `*.sh` files instead.
-            for script ($location/*.sh(N)) { source "$script" }
-
+            for script ($location/*.*sh(N)) { source "$script" }
         fi
 
         # Add to $fpath, for completion(s).
