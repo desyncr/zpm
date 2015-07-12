@@ -79,8 +79,8 @@ function -zpm-ext-capture () {
             local hook_name="$1-$2"
             local names=${callbacks[$hook_name]}
             for hook in ${(s.:.)names}; do
-                -zpm-ext-log calling hook function $hook for $hook_name
-                eval "$hook" "$3"
+                -zpm-ext-log calling hook function $hook for $hook_name with \'${@[3,-1]}\'
+                eval "$hook" "${@[3,-1]}"
             done
         }
 
@@ -88,6 +88,7 @@ function -zpm-ext-capture () {
         call-hooks "$callback" "pre" "$@"
 
         # we call the captured function
+        -zpm-ext-log calling captured function $0 with "$@"
         -captured-$0 $@
 
         # calling post hooks
@@ -143,5 +144,5 @@ function -zpm-ext-compadd () {
 function zpm-ext () {
     local extension_name="$1"
     -zpm-ext-log loading extension "$extension_name"
-    zpm-load "$extension_name"
+    zpm-load "$@"
 }

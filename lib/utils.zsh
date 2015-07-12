@@ -27,7 +27,8 @@
     echo "$1" | sed \
         -e 's./.-SLASH-.g' \
         -e 's.:.-COLON-.g' \
-        -e 's.|.-PIPE-.g'
+        -e 's.|.-PIPE-.g' \
+        -e 's.#.-SHARP-.g'
 }
 
 # Takes a repo's clone dir and gives out the repo's original url that was
@@ -37,7 +38,8 @@
         -e "s:^$ZPM_DIR/repos/::" \
         -e 's.-SLASH-./.g' \
         -e 's.-COLON-.:.g' \
-        -e 's.-PIPE-.|.g'
+        -e 's.-PIPE-.|.g' \
+        -e 's.-SHARP-.#.g'
 }
 
 # Ensure that a clone exists for the given repo url and branch. If the first
@@ -60,12 +62,12 @@
 
     # A temporary function wrapping the `git` command with repeated arguments.
     --plugin-git () {
-        (cd "$clone_dir" && git --no-pager "$@")
+        (cd "$clone_dir" && git --no-pager "$@" &> /dev/null )
     }
 
     # Clone if it doesn't already exist.
     if [[ ! -d $clone_dir ]]; then
-        git clone --recursive "${url%|*}" "$clone_dir"
+        git clone --recursive "${url%#*}" "$clone_dir"
     elif $update; then
         # Save current revision.
         local old_rev="$(--plugin-git rev-parse HEAD)"
@@ -78,9 +80,9 @@
     fi
 
     # If its a specific branch that we want, checkout that branch.
-    if [[ $url == *\|* ]]; then
+    if [[ $url == *#* ]]; then
         local current_branch=${$(--plugin-git symbolic-ref HEAD)##refs/heads/}
-        local requested_branch="${url#*|}"
+        local requested_branch="${url#*#}"
         # Only do the checkout when we are not already on the branch.
         [[ $requested_branch != $current_branch ]] &&
             --plugin-git checkout $requested_branch
@@ -119,7 +121,7 @@
 
     # Add the branch information to the url.
     if [[ ! -z $branch ]]; then
-        url="$url|$branch"
+        url="$url#$branch"
     fi
 
     # The `make_local_clone` variable better represents whether there should be
@@ -135,6 +137,7 @@
 
     echo "$url $loc $make_local_clone"
 }
+
 # An argument parsing functionality to parse arguments the *antigen* way :).
 # Takes one first argument (called spec), which dictates how to parse and
 # the rest of the arguments are parsed. Outputs a piece of valid shell code

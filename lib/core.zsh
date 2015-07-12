@@ -80,7 +80,7 @@
 
     # Add the branch information to the url.
     if [[ ! -z $branch ]]; then
-        url="$url|$branch"
+        url="$url#$branch"
     fi
 
     # The `make_local_clone` variable better represents whether there should be
