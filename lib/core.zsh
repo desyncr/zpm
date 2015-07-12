@@ -17,6 +17,9 @@
     if [[ -f "$location" ]]; then
         source "$location"
 
+    elif [[ -f "$location.zsh" ]]; then
+        source "$location.zsh"
+
     elif [[ -d "$location" ]]; then
 
         # Source the plugin script.

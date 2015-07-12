@@ -142,7 +142,14 @@ function -zpm-ext-compadd () {
 # usage:
 #   zpm ext "extname"
 function zpm-ext () {
-    local extension_name="$1"
-    -zpm-ext-log loading extension "$extension_name"
-    zpm-load "$@"
+    if [[ "$1" == "" ]]; then
+        local line=""
+        grep '^[[:space:]]*[^[:space:]#]' | while read line; do
+            eval zpm-ext $line
+        done
+    else
+        local extension_name="$1"
+        -zpm-ext-log loading extension "$extension_name"
+        zpm-load "$@"
+    fi
 }
