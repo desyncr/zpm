@@ -140,15 +140,8 @@ function -zpm-ext-compadd () {
 #
 # usage:
 #   zpm ext "extname"
-#
-# it the extension is not found it logs the error and moves along
 function zpm-ext () {
     local extension_name="$1"
-    local extension_path="$_ZPM_INSTALL_DIR/ext/$1.zsh"
-    -zpm-ext-log loading extension "$extension_name" from $extension_path
-    if [ -e "$extension_path" ]; then
-        source "$extension_path"
-    else
-        -zpm-ext-log-error "No extension found!: $extension_name ($extension_path)"
-    fi
+    -zpm-ext-log loading extension "$extension_name"
+    zpm-load "$extension_name"
 }

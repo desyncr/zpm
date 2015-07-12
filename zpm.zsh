@@ -15,30 +15,7 @@ compdef () { __deferred_compdefs=($__deferred_compdefs "$*") }
 # Keyword only arguments:
 #   branch - The branch of the repo to use for this bundle.
 zpm-load () {
-    # Bundle spec arguments' default values.
-    local url="$ZPM_DEFAULT_REPO_URL"
-    local loc=/
-    local branch=
-    local no_local_clone=false
-    local btype=plugin
-
-    # Parse the given arguments. (Will overwrite the above values).
-    eval "$(-zpm-parse-args \
-            'url?, loc? ; branch:?, no-local-clone?, btype:?' \
-            "$@")"
-
-    # Install the package if necessary
-    -zpm-install-package "$@"
-
-    # Load the plugin.
-    url="$(-zpm-resolve-package-url "$url")"
-
-    # Add the branch information to the url.
-    if [[ ! -z $branch ]]; then
-        url="$url|$branch"
-    fi
-
-    -zpm-load-package "$url" "$loc" "$make_local_clone"
+    -zpm-load-package $(-zpm-parse-package-query "$@")
 }
 
 # Install a given package and make it available (PATH it)
@@ -47,30 +24,7 @@ zpm-load () {
 # Keyword only arguments:
 #   branch - The branch of the repo to use for this bundle.
 zpm-install () {
-    # Bundle spec arguments' default values.
-    local url="$ZPM_DEFAULT_REPO_URL"
-    local loc=/
-    local branch=
-    local no_local_clone=false
-    local btype=plugin
-
-    # Parse the given arguments. (Will overwrite the above values).
-    eval "$(-zpm-parse-args \
-            'url?, loc? ; branch:?, no-local-clone?, btype:?' \
-            "$@")"
-
-    # Install the package if necessary
-    -zpm-install-package "$@"
-
-    # make package bin available
-    url="$(-zpm-resolve-package-url "$url")"
-
-    # Add the branch information to the url.
-    if [[ ! -z $branch ]]; then
-        url="$url|$branch"
-    fi
-
-    -zpm-enable-package "$url" "$loc" "$make_local_clone"
+    -zpm-enable-package $(-zpm-parse-package-query "$@")
 }
 
 # Intializes compinit and loads deferred compdefs

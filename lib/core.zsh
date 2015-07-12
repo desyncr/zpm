@@ -17,7 +17,7 @@
     if [[ -f "$location" ]]; then
         source "$location"
 
-    else
+    elif [[ -d "$location" ]]; then
 
         # Source the plugin script.
         # FIXME: I don't know. Looks very very ugly. Needs a better

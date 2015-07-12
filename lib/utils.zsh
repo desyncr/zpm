@@ -97,6 +97,44 @@
     unfunction -- --plugin-git
 }
 
+
+-zpm-parse-package-query () {
+    # Bundle spec arguments' default values.
+    local url="$ZPM_DEFAULT_REPO_URL"
+    local loc=/
+    local branch=
+    local no_local_clone=false
+    local btype=plugin
+
+    # Parse the given arguments. (Will overwrite the above values).
+    eval "$(-zpm-parse-args \
+            'url?, loc? ; branch:?, no-local-clone?, btype:?' \
+            "$@")"
+
+    # Install the package if necessary
+    -zpm-install-package "$@"
+
+    # Load the plugin.
+    url="$(-zpm-resolve-package-url "$url")"
+
+    # Add the branch information to the url.
+    if [[ ! -z $branch ]]; then
+        url="$url|$branch"
+    fi
+
+    # The `make_local_clone` variable better represents whether there should be
+    # a local clone made. For cloning to be avoided, firstly, the `$url` should
+    # be an absolute local path and `$branch` should be empty. In addition to
+    # these two conditions, either the `--no-local-clone` option should be
+    # given, or `$url` should not a git repo.
+    local make_local_clone=true
+    if [[ $url == /* && -z $branch &&
+            ( $no_local_clone == true || ! -d $url/.git ) ]]; then
+        make_local_clone=false
+    fi
+
+    echo "$url $loc $make_local_clone"
+}
 # An argument parsing functionality to parse arguments the *antigen* way :).
 # Takes one first argument (called spec), which dictates how to parse and
 # the rest of the arguments are parsed. Outputs a piece of valid shell code
