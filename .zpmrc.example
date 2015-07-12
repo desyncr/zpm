@@ -1,5 +1,4 @@
-zpm ext zpm-logger
-zpm ext zpm-theme
+zpm ext desyncr/zpm-ext
 
 zpm install junegunn/fzf
 zpm load zsh-users/zsh-syntax-highlighting
