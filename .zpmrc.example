@@ -1,7 +1,19 @@
 zpm ext desyncr/zpm-ext
 
-zpm install junegunn/fzf
-zpm load zsh-users/zsh-syntax-highlighting
+zpm install <<INSTALL
+    junegunn/fzf
+    LuRsT/hr
+INSTALL
+
+zpm load <<PLUGINS
+    zsh-users/zsh-syntax-highlighting
+    zsh-users/zsh-completions src
+    zsh-users/zsh-history-substring-search
+    desyncr/vagrant-zsh-completion
+    felixr/docker-zsh-completion
+    jocelynmallon/zshmarks
+PLUGINS
+
 zpm theme desyncr/powerlevel9k powerlevel9k --branch=dritter/prezto
 
 zpm apply

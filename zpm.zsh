@@ -15,7 +15,14 @@ compdef () { __deferred_compdefs=($__deferred_compdefs "$*") }
 # Keyword only arguments:
 #   branch - The branch of the repo to use for this bundle.
 zpm-load () {
-    -zpm-load-package $(-zpm-parse-package-query "$@")
+    if [[ "$1" == "" ]]; then
+        local line=""
+        grep '^[[:space:]]*[^[:space:]#]' | while read line; do
+            eval zpm-load $line
+        done
+    else
+        -zpm-load-package $(-zpm-parse-package-query "$@")
+    fi
 }
 
 # Install a given package and make it available (PATH it)
@@ -24,7 +31,14 @@ zpm-load () {
 # Keyword only arguments:
 #   branch - The branch of the repo to use for this bundle.
 zpm-install () {
-    -zpm-enable-package $(-zpm-parse-package-query "$@")
+    if [[ "$1" == "" ]]; then
+        local line=""
+        grep '^[[:space:]]*[^[:space:]#]' | while read line; do
+            eval zpm-install $line
+        done
+    else
+        -zpm-enable-package $(-zpm-parse-package-query "$@")
+    fi
 }
 
 # Intializes compinit and loads deferred compdefs
