@@ -1,7 +1,4 @@
-zpm ext <<EXT
-    desyncr/zpm-ext cache
-    desyncr/zpm-ext theme
-EXT
+zpm ext desyncr/zpm-ext
 
 zpm install <<INSTALL
     junegunn/fzf
