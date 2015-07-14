@@ -99,6 +99,46 @@
     unfunction -- --plugin-git
 }
 
+# Get a list of files to source to load the given plugin
+-zpm-package-source () {
+    local url="$1"
+    local loc="$2"
+    local make_local_clone="$3"
+
+    # The full location where the plugin is located.
+    local location
+    if $make_local_clone; then
+        location="$(-zpm-get-clone-dir "$url")/"
+    else
+        location="$url/"
+    fi
+
+    [[ $loc != "/" ]] && location="$location$loc"
+
+    if [[ -f "$location" ]]; then
+        echo "$location"
+
+    elif [[ -f "$location.zsh" ]]; then
+        echo "$location.zsh"
+
+    elif [[ -d "$location" ]]; then
+
+        # Source the plugin script.
+        # FIXME: I don't know. Looks very very ugly. Needs a better
+        # implementation once tests are ready.
+        local script_loc="$(ls "$location" | grep '\.plugin\.zsh$' | head -n1)"
+
+        if [[ -f $location/$script_loc ]]; then
+            # If we have a `*.plugin.zsh`, source it.
+            echo "$location/$script_loc"
+
+        elif ls "$location" | grep -l '\..*sh$' &> /dev/null; then
+            # If there is no `*.plugin.zsh` file, source *all* the `*.zsh`
+            # files.
+            for script ($location/*.*sh(N)) { echo "$script" }
+        fi
+    fi
+}
 
 -zpm-parse-package-query () {
     # Bundle spec arguments' default values.

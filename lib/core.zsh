@@ -1,46 +1,12 @@
 # Load a package
 -zpm-load-package () {
-    local url="$1"
-    local loc="$2"
-    local make_local_clone="$3"
-
-    # The full location where the plugin is located.
-    local location
-    if $make_local_clone; then
-        location="$(-zpm-get-clone-dir "$url")/"
-    else
-        location="$url/"
-    fi
-
-    [[ $loc != "/" ]] && location="$location$loc"
-
-    if [[ -f "$location" ]]; then
-        source "$location"
-
-    elif [[ -f "$location.zsh" ]]; then
-        source "$location.zsh"
-
-    elif [[ -d "$location" ]]; then
-
-        # Source the plugin script.
-        # FIXME: I don't know. Looks very very ugly. Needs a better
-        # implementation once tests are ready.
-        local script_loc="$(ls "$location" | grep '\.plugin\.zsh$' | head -n1)"
-
-        if [[ -f $location/$script_loc ]]; then
-            # If we have a `*.plugin.zsh`, source it.
-            source "$location/$script_loc"
-
-        elif ls "$location" | grep -l '\..*sh$' &> /dev/null; then
-            # If there is no `*.plugin.zsh` file, source *all* the `*.zsh`
-            # files.
-            for script ($location/*.*sh(N)) { source "$script" }
+    -zpm-package-source "$@" | while read line; do
+        if [[ -f "$line" ]]; then
+            source "$line"
+        elif [[ -d "$line" ]]; then
+            fpath=($line $fpath)
         fi
-
-        # Add to $fpath, for completion(s).
-        fpath=($location $fpath)
-
-    fi
+    done
 }
 
 # Enables a package (PATH it)
