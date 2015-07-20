@@ -22,8 +22,6 @@ Tests docblock syntax.
   >    $PLUGIN_DIR
   >    $PLUGIN_DIR2
   > EOPLUGINS
-  Cloning into '.*'... (re)
-  done.
 
   $ echo $PATH
   .*test\-plugin.* (re)
@@ -43,3 +41,8 @@ Confirm there are now two repositories.
 
   $ ls $ZPM_DIR/repos | wc -l
   2
+
+Install from a specific branch.
+  $ zpm-install $PLUGIN_DIR --branch=dev &> /dev/null
+  $ echo $PATH
+  .*test\-plugin\-SHARP\-dev.* (re)

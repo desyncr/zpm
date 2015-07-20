@@ -38,6 +38,10 @@
             'url?, loc? ; branch:?, no-local-clone?, btype:?' \
             "$@")"
 
+    if [[ "$url" == "" ]]; then
+        return;
+    fi
+
     # Check if url is just the plugin name. Super short syntax.
     if [[ "$url" != */* ]]; then
         loc="plugins/$url"
@@ -70,6 +74,6 @@
 
     # Ensure a clone exists for this repo, if needed.
     if $make_local_clone; then
-        -zpm-clone-repo "$url"
+        -zpm-clone-repo "$url" &> /dev/null
     fi
 }

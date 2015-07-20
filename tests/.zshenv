@@ -25,6 +25,16 @@ echo 'export PS1="prompt>"' > "$PLUGIN_DIR"/silly.zsh-theme
     pg commit -m 'Initial commit'
 } > /dev/null
 
+# Create a specific branch
+echo 'alias hehetest="echo hehetest"' > "$PLUGIN_DIR"/aliases.zsh
+echo 'export PS1="prompt-test>"' > "$PLUGIN_DIR"/silly.zsh-theme
+{
+	pg checkout -b dev
+    pg add .
+    pg commit -m 'Testing prompt'
+    pg checkout master
+} &> /dev/null
+
 # Another test plugin.
 
 export PLUGIN_DIR2="$PWD/test-plugin2"

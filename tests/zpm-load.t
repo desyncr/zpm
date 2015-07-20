@@ -21,8 +21,6 @@ Tests docblock syntax.
   >    $PLUGIN_DIR
   >    $PLUGIN_DIR2
   > EOPLUGINS
-  Cloning into '.*'... (re)
-  done.
 
   $ hehe
   hehe
@@ -34,3 +32,8 @@ Confirm there are now two repositories.
 
   $ ls $ZPM_DIR/repos | wc -l
   2
+
+Load from a specific branch.
+  $ zpm-load $PLUGIN_DIR --branch=dev &> /dev/null
+  $ hehetest
+  hehetest
