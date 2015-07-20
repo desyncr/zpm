@@ -9,7 +9,7 @@ source "$_ZPM_INSTALL_DIR/lib/ext.zsh"
 typeset -a __deferred_compdefs
 compdef () { __deferred_compdefs=($__deferred_compdefs "$*") }
 
-# Load a given package and loads it (sources it)
+# Load a given package and sources it
 # Syntaxes
 #   zpm-load <url> [<loc>=/]
 # Keyword only arguments:

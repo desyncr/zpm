@@ -64,10 +64,9 @@
     --plugin-git () {
         (cd "$clone_dir" && git --no-pager "$@" &> /dev/null )
     }
-
     # Clone if it doesn't already exist.
     if [[ ! -d $clone_dir ]]; then
-        git clone --recursive "${url%#*}" "$clone_dir"
+        git clone --recursive "${url%'#'*}" "$clone_dir"
     elif $update; then
         # Save current revision.
         local old_rev="$(--plugin-git rev-parse HEAD)"
@@ -80,9 +79,9 @@
     fi
 
     # If its a specific branch that we want, checkout that branch.
-    if [[ $url == *#* ]]; then
+    if [[ $url == *'#'* ]]; then
         local current_branch=${$(--plugin-git symbolic-ref HEAD)##refs/heads/}
-        local requested_branch="${url#*#}"
+        local requested_branch="${url#*'#'}"
         # Only do the checkout when we are not already on the branch.
         [[ $requested_branch != $current_branch ]] &&
             --plugin-git checkout $requested_branch
