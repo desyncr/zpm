@@ -1,4 +1,4 @@
-zpm - Zsh Plugin Manager
+zpm - Zsh Plugin Manager [![Build Status](https://travis-ci.org/desyncr/zpm.svg)](https://travis-ci.org/desyncr/zpm)
 ===
 
 zpm is a spin off Antigen which aims to provide a lightweight, fast and flexible plugin manager for ZSH.
