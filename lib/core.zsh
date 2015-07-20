@@ -38,9 +38,7 @@
             'url?, loc? ; branch:?, no-local-clone?, btype:?' \
             "$@")"
 
-    if [[ "$url" == "" ]]; then
-        return;
-    fi
+    [[ "$url" == "" ]] && return;
 
     # Check if url is just the plugin name. Super short syntax.
     if [[ "$url" != */* ]]; then

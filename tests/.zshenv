@@ -29,7 +29,7 @@ echo 'export PS1="prompt>"' > "$PLUGIN_DIR"/silly.zsh-theme
 echo 'alias hehetest="echo hehetest"' > "$PLUGIN_DIR"/aliases.zsh
 echo 'export PS1="prompt-test>"' > "$PLUGIN_DIR"/silly.zsh-theme
 {
-	pg checkout -b dev
+    pg checkout -b dev
     pg add .
     pg commit -m 'Testing prompt'
     pg checkout master
