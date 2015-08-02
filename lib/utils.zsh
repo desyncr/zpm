@@ -135,6 +135,8 @@
             # If there is no `*.plugin.zsh` file, source *all* the `*.zsh`
             # files.
             for script ($location/*.*sh(N)) { echo "$script" }
+        else
+            echo "$location"
         fi
     fi
 }
