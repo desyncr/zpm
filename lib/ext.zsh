@@ -132,7 +132,8 @@ function -zpm-ext-hook () {
 function -zpm-ext-compadd () {
     local compadd_function="compadd-ext-$1"
     eval "function $compadd_function () {
-        compadd "$1"
+        local _zpm_ext_compadd=('$1:$2')
+        _describe -t commands 'zpm command' _zpm_ext_compadd
     }"
     -zpm-ext-hook "_zpm" $compadd_function
 }
