@@ -58,6 +58,66 @@ zpm-apply () {
             done)"
 
     unset __deferred_compdefs
+
+    # Setup zpm's own completion.
+    compdef _zpm zpm
+}
+
+# Show help
+zpm-help () {
+    echo "zpm - Zsh Plugin Manager"
+    echo "version $(zpm-version)"
+    echo "Project page: https://github.com/desyncr/zpm"
+}
+
+# Display zpm version
+zpm-version () {
+    [[ -f "$ZPM_DIR/VERSION" ]] && cat "$ZPM_DIR/VERSION"
+}
+
+# Setup zpm's autocompletion
+_zpm () {
+    local -a _1st_arguments
+    _1st_arguments=(
+        'apply:Load defined completions'
+        'help:Print help message'
+        'install:Installs a given binary'
+        'load:Installs and load a given plugin'
+        'version:Show currently running version'
+    )
+
+    __install() {
+      _arguments \
+        '--loc[Path to the location <path-to/location>]' \
+        '--url[Path to the repository <vendor/repository>]' \
+        '--branch[branch name]' \
+        '--no-local-clone[Do not create a clone]'
+    }
+
+    __load() {
+        _arguments \
+          '--loc[Path to the location <path-to/location>]' \
+          '--url[Path to the repository <vendor/repository>]' \
+          '--branch[branch name]' \
+          '--no-local-clone[Do not create a clone]'
+    }
+
+    _arguments '*:: :->command'
+
+    if (( CURRENT == 1 )); then
+      _describe -t commands "zpm command" _1st_arguments
+      return
+    fi
+
+    local -a _command_args
+    case "$words[1]" in
+        install)
+            __install
+        ;;
+        load)
+            __load
+        ;;
+    esac
 }
 
 # A syntax sugar to avoid the `-` when calling zpm commands. With this
