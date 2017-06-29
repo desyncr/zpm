@@ -1,3 +1,10 @@
+
+## DEPRECATED
+
+Effort and ideas are being directed towards [Antigen](https://github.com/zsh-users/antigen) project. This repository will be available for anyone insteresting in looking at it and playing with it, no further development or maintenance will be provided.
+
+See https://github.com/zsh-users/antigen
+
 zpm - Zsh Plugin Manager [![Build Status](https://travis-ci.org/desyncr/zpm.svg)](https://travis-ci.org/desyncr/zpm)
 ===
 
